@@ -1,1 +1,4 @@
 # testingSMsplice
+
+步驟:
+
