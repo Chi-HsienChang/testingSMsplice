@@ -13,7 +13,9 @@
 
 ## Compile
 
-cythonize -3 -a -i SMsplice.pyx
-python3 setup.py build_ext --inplace
+- python3 setup.py build_ext --inplace
+
+- cythonize -3 -a -i SMsplice.pyx
+
 
 
