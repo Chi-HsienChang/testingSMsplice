@@ -89,8 +89,8 @@ for g, gene in enumerate(testGenes):
     valid_paths_sorted = sorted(valid_paths, key=lambda x: x[1], reverse=True)
 
     for i, (path, score, score_details) in enumerate(valid_paths_sorted):
-        predicted_fives = np.array([index for index, symbol in enumerate(path) if symbol == 5])
-        predicted_threes = np.array([index for index, symbol in enumerate(path) if symbol == 3])
+        bs_predicted_fives = np.array([index for index, symbol in enumerate(path) if symbol == 5])
+        bs_predicted_threes = np.array([index for index, symbol in enumerate(path) if symbol == 3])
 
         if i == 0:
             # if (not np.array_equal(predFives_all[g], predicted_fives) or not np.array_equal(predThrees_all[g], predicted_threes)):
@@ -110,8 +110,8 @@ for g, gene in enumerate(testGenes):
             print(f"π* 5SS: {predFives_all[g]}")
             print(f"π* 3SS: {predThrees_all[g]}")
 
-            print(f"π BS 5SS: {predicted_fives}")
-            print(f"π BS 3SS: {predicted_threes}")
+            print(f"π BS 5SS: {bs_predicted_fives}")
+            print(f"π BS 3SS: {bs_predicted_threes}")
             print(f"SM[seq, π] = {score}")
             print("Score Details:")
             for detail in score_details:
@@ -119,18 +119,18 @@ for g, gene in enumerate(testGenes):
             print("-" * 50) 
 
             # True positives: correct predictions in both categories
-            tp_fives = np.intersect1d(predicted_fives, trueFives_all[g]).size
-            tp_threes = np.intersect1d(predicted_threes, trueThrees_all[g]).size
+            tp_fives = np.intersect1d(bs_predicted_fives, trueFives_all[g]).size
+            tp_threes = np.intersect1d(bs_predicted_threes, trueThrees_all[g]).size
             num_truePositives_bs += (tp_fives + tp_threes)
 
             # False positives: predicted positions that are not in the ground truth
-            fp_fives = np.setdiff1d(predicted_fives, trueFives_all[g]).size
-            fp_threes = np.setdiff1d(predicted_threes, trueThrees_all[g]).size
+            fp_fives = np.setdiff1d(bs_predicted_fives, trueFives_all[g]).size
+            fp_threes = np.setdiff1d(bs_predicted_threes, trueThrees_all[g]).size
             num_falsePositives_bs += (fp_fives + fp_threes)
 
             # False negatives: ground truth positions missed by predictions
-            fn_fives = np.setdiff1d(trueFives_all[g], predicted_fives).size
-            fn_threes = np.setdiff1d(trueThrees_all[g], predicted_threes).size
+            fn_fives = np.setdiff1d(trueFives_all[g], bs_predicted_fives).size
+            fn_threes = np.setdiff1d(trueThrees_all[g], bs_predicted_threes).size
             num_falseNegatives_bs += (fn_fives + fn_threes)
             bs_count += 1
 
