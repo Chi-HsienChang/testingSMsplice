@@ -53,7 +53,7 @@ trueThrees_all = data['trueThrees_all']
 
 pred_match = 0
 top = 1
-print("BS top = ", top)
+print("beam_search_top = ", top)
 beam_width = 100
 print("beam_width =", beam_width)
 
@@ -80,7 +80,7 @@ for g, gene in enumerate(testGenes):
     # if g in [19]:
     # if g in TAIR_not_match:
     print(gene)
-    print("g_index = ", g)
+    print("g_index=", g)
     print(f"lengths[{g}] = ", lengths[g])
     print(f"Predicted len: {len(predFives_all[g])}")
     valid_paths = beam_search_for_top_k_parse(sequences[g], pME, pELF, pIL, pEE, pELM, pEO, pELL, emissions5[g], emissions3[g], lengths[g], beam_width)
@@ -119,13 +119,13 @@ for g, gene in enumerate(testGenes):
             print("-" * 50) 
 
             # True positives: correct predictions in both categories
-            tp_fives = np.intersect1d(trueFives_all[g], predicted_fives).size
-            tp_threes = np.intersect1d(trueThrees_all[g], predicted_threes).size
+            tp_fives = np.intersect1d(predicted_fives, trueFives_all[g]).size
+            tp_threes = np.intersect1d(predicted_threes, trueThrees_all[g]).size
             num_truePositives_bs += (tp_fives + tp_threes)
 
             # False positives: predicted positions that are not in the ground truth
-            fp_fives = np.setdiff1d(trueFives_all[g], predicted_fives).size
-            fp_threes = np.setdiff1d(trueThrees_all[g], predicted_threes).size
+            fp_fives = np.setdiff1d(predicted_fives, trueFives_all[g]).size
+            fp_threes = np.setdiff1d(predicted_threes, trueThrees_all[g]).size
             num_falsePositives_bs += (fp_fives + fp_threes)
 
             # False negatives: ground truth positions missed by predictions
